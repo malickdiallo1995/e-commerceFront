@@ -16,6 +16,9 @@ export class ServicePaymentService {
    * @param state
    */
   public payment (transaction_id, state ){
-    return this.httpClient.get(this.url+"?transaction_id="+transaction_id+"&&state="+state);
+    console.log("IN TRANSACTION SERVICE");
+    return this.httpClient.get(this.url + "?transaction_id="+transaction_id+"&&state="+state).subscribe((response) => {
+
+    });
   }
 }

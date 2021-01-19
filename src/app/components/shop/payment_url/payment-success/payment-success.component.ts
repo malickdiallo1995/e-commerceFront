@@ -12,9 +12,9 @@ export class PaymentSuccessComponent implements OnInit {
   constructor(private route: ActivatedRoute,private servicePayment:ServicePaymentService) { }
 
   ngOnInit(): void {
-    console.log("*********** Get Transaction ID success ************")
-    this.transactionId =  this.route.snapshot.queryParamMap.get("transaction_id")
-    console.log("*********** Transaction ID [",this.transactionId);
+    console.log('*********** Get Transaction ID success ************')
+    this.transactionId =  this.route.snapshot.queryParamMap.get('transaction_id')
+    console.log('*********** Transaction ID [',this.transactionId);
     this.servicePayment.payment(this.transactionId,'SUCCESS');
   }
 
