@@ -1,0 +1,10 @@
+<div class="price-slider">
+  <div fxLayout="row" fxLayoutAlign="space-between center" class="text-muted">
+      <span>From: <b>{{priceFrom}} FCFA</b></span>
+      <span>To: <b>{{priceTo}} FCFA</b></span>
+  </div>
+  <div fxLayout="row" fxLayoutAlign="space-between center" class="filter-price">
+    <mat-slider (change)="priceFilter()" color="primary" [max]="maxProductValue" [min]="minProductValue" thumb-label="true" [(ngModel)]="priceFrom"></mat-slider>
+    <mat-slider (change)="priceFilter()" color="warn" [max]="maxProductValue" [min]="minProductValue" thumb-label="true" [(ngModel)]="priceTo"></mat-slider>
+</div>
+</div>

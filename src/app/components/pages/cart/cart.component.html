@@ -1,0 +1,81 @@
+<div class="container">
+   <div class="cart-wrapper sec-padding">
+      <div fxLayout="column" fxLayoutAlign="space-around center" *ngIf="!shoppingCartItems.length">
+         <mat-chip-list>
+            <mat-chip color="warn" selected="true">VOTRE PANIER EST VIDE.</mat-chip>
+         </mat-chip-list>
+         <div>
+            <a  mat-raised-button color="primary" class="btn-project mt-20">Continuer le shopping</a>
+         </div>
+      </div>
+      <mat-card *ngIf="shoppingCartItems.length"  class="p-0">
+         <div class="mat-table cart-table">
+            <div class="mat-header-row">
+               <div class="mat-header-cell">Produit</div>
+               <div class="mat-header-cell">Nom</div>
+               <div class="mat-header-cell">Prix</div>
+               <div class="mat-header-cell">Quantité</div>
+               <div class="mat-header-cell">Total</div>
+               <div class="mat-header-cell">Action</div>
+            </div>
+            <div *ngFor="let item of shoppingCartItems"  class="mat-row">
+               <div class="mat-cell"><img [src]="item.forfaitTelephone.product.images[0].url"></div>
+               <div class="mat-cell"><a  class="product-name"><p>{{item.forfaitTelephone.product.name}}</p>
+                   <p *ngIf="item.forfaitTelephone.forfait && item.forfaitTelephone.forfait.typePrePostPaid === 'prePaid'">Forfait sans engagement: {{item.forfaitTelephone.forfait.nom}} {{item.forfaitTelephone.forfait.montant | currency:productsService?.currency:'symbol'}}</p>
+                   <p *ngIf="item.forfaitTelephone.forfait && item.forfaitTelephone.forfait.typePrePostPaid === 'postPaid'">
+                      Forfait avec engagement: {{item.forfaitTelephone.forfait.nom}} {{item.forfaitTelephone.forfait.montant  | currency:productsService?.currency:'symbol'}} par mois
+                      <span class="messageCartForfait">Nos agents vous contacterons pour le réglement du forfait avec engagement</span>
+                   </p>
+                      </a>
+                </div>
+                
+ 
+               <div class="mat-cell price"><p>{{item.forfaitTelephone.product.salePrice | currency:productsService?.currency:'symbol'}}</p>
+             <p *ngIf="item.forfaitTelephone.forfait && item.forfaitTelephone.forfait.typePrePostPaid === 'prePaid'"> + {{item.forfaitTelephone.forfait.montant | currency:productsService?.currency:'symbol'}}</p></div>
+ 
+               <div class="mat-cell text-muted">
+                  <div fxLayout="row" fxLayout.xs="column"  class="text-muted">
+                     <div fxLayout="row" fxLayoutAlign="center start">
+                        <button mat-icon-button matTooltip="Remove" (click)="decrement(item.forfaitTelephone)">
+                           <mat-icon>remove</mat-icon>
+                        </button>
+                        <input type="text" name="quantity"  [(ngModel)]="item.quantity" disabled class="form-control input-number">
+                        <button mat-icon-button matTooltip="Add" (click)="increment(item.forfaitTelephone)">
+                           <mat-icon>add</mat-icon>
+                        </button>
+                     </div>
+                     <!-- <div *ngIf="type!='wish'">
+                        <button mat-icon-button matTooltip="Add to wishlist" (click)="addToWishList(product)"><mat-icon>favorite</mat-icon></button>
+                        <button mat-icon-button matTooltip="Add to cart" *ngIf="product?.availibilityCount > 0" (click)="addToCart(product)"><mat-icon>shopping_cart</mat-icon></button>
+                        <button mat-icon-button matTooltip="Add to compare" (click)="addToCompare(product)"><mat-icon>compare</mat-icon></button>
+                        <button *ngIf="type!='all'" mat-icon-button matTooltip="Quick view" (click)="openProductDialog(product)"><mat-icon>remove_red_eye</mat-icon></button>
+                        </div> -->
+                  </div>
+               </div>
+               <div class="mat-cell total" *ngIf='!item.forfaitTelephone.forfait'>{{item.forfaitTelephone.product.salePrice * item.quantity  | currency:productsService?.currency:'symbol'}}</div>
+               <div class="mat-cell total" *ngIf="item.forfaitTelephone.forfait && item.forfaitTelephone.forfait.typePrePostPaid === 'prePaid'">{{(item.forfaitTelephone.product.salePrice + item.forfaitTelephone.forfait.montant) * item.quantity  | currency:productsService?.currency:'symbol'}}</div>
+               <div class="mat-cell total" *ngIf="item.forfaitTelephone.forfait && item.forfaitTelephone.forfait.typePrePostPaid === 'postPaid'">{{item.forfaitTelephone.product.salePrice * item.quantity | currency:productsService?.currency:'symbol'}}</div>
+ 
+ 
+               <div class="mat-cell text-center">
+                  <div class="p-1">
+                     <mat-icon (click)="removeItem(item)">close</mat-icon>
+                  </div>
+               </div>
+            </div>
+            <div class="mat-row">
+               <div class="mat-cell"><a  mat-raised-button color="primary"  class="btn-project" [routerLink]="['/home/one']" routerLinkActive="router-link-active" >Continuer le shopping</a></div>
+               <div class="mat-cell"></div>
+               <div class="mat-cell"></div>
+               <div class="mat-cell text-right">
+                  <div fxLayout="column" fxLayoutAlign="center end" class="grand-total px-2">
+                     <span class="new-price">Grand total: {{getTotal()  | async | currency:productsService?.currency:'symbol'}}</span>
+                  </div>
+               </div>
+               <div class="mat-cell text-center"><a mat-raised-button color="primary"  class="btn-project" [routerLink]="['/pages/checkout']" routerLinkActive="router-link-active" >Procéder au paiement</a></div>
+            </div>
+         </div>
+      </mat-card>
+   </div>
+ </div>
+ 

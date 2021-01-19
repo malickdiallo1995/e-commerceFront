@@ -1,0 +1,166 @@
+<div class="product-dialog">
+
+  <div class="close-btn-outer">
+    <button mat-mini-fab color="warn" (click)="close()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+  <div mat-dialog-content>
+    <div fxLayout="row wrap">
+      <div fxFlex="100" fxFlex.gt-sm="50">
+        <div class="swiper-container h-100">
+          <div class="swiper-wrapper">
+            <img [src]="product.images[0].url" alt="" class="img-fluid">
+          </div>
+
+        </div>
+      </div>
+      <div fxFlex="100" fxFlex.gt-sm="50" ngClass.gt-sm="px-2 m-0" ngClass.sm="mt-2" ngClass.xs="mt-2">
+        <div class="product-right">
+          <div class="product-details">
+            <h2 class="mb-10">{{product.name}}</h2>
+            <span class="text-muted fw-500">Marque : <b>{{product.brand}}</b></span>
+
+            <h4 class="mb-10" *ngIf='product.discount!=0'><del>{{product.price | currency:productsService?.currency:'symbol'}}</del><span>{{product.discount}}% Réduction</span></h4>
+            <h3 class="price mb-10">{{product.salePrice | currency:productsService?.currency:'symbol'}}</h3>
+            <div class="discription">
+              <p class="bold">Détails du product</p>
+              <p class="text-muted productDescription">{{product.description}}</p>
+            </div>
+          </div>
+          <div class="container">
+            <div class="row">
+               <div class="col-md-6">
+                  <div class="py-1 mt-15">
+                     <p>
+                        <span class="text-muted fw-500">Disponibilité: </span>
+                        <span class="avalibility" *ngIf="counter <= product.stock"><span>En stock</span></span>
+                        <span class="avalibility" *ngIf="counter > product.stock"><span>Quantité non disponible</span></span>
+                     </p>
+                     <p>
+                     <span>Etat : <b>{{product.etat}}</b></span>
+
+                     </p>
+                  </div>
+                  <br>
+                  <div class="forfait">
+
+                    <mat-form-field>
+                      <mat-label>Type de forfait</mat-label>
+                      <mat-select (selectionChange)="selectTypeForfait($event)" [(value)]="defaultTypeForfait">
+                        <mat-option *ngFor="let typeforfait of typeForfait" [value] ="typeforfait">{{typeforfait}}</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                      
+                  </div>
+                 <div class="forfait" *ngIf="forfaitsByType.length!==0">
+                   <mat-form-field>
+                     <mat-label>Forfait</mat-label>
+                     <mat-select (selectionChange)="selectForfait($event)" [(value)]="selectedForfait" required>
+                       <mat-option *ngFor="let forfait of forfaitsByType" [value] ="forfait">
+                          {{forfait.nom}}
+                       </mat-option>
+                     </mat-select>
+                   </mat-form-field>
+
+                 </div>
+                  <!-- <div class="quantity">
+                     <span class="text-muted fw-500">Quantité</span>
+                     <div fxLayout="row" fxLayout.xs="column"  class="text-muted">
+                        <div fxLayout="row" fxLayoutAlign="center start">
+                           <button mat-icon-button matTooltip="Remove" (click)="decrement()">
+                              <mat-icon>remove</mat-icon>
+                           </button>
+                           <input type="text" name="quantity" value="{{counter}}" class="form-control input-number">
+                           <button mat-icon-button matTooltip="Add" (click)="increment()">
+                              <mat-icon>add</mat-icon>
+                           </button>
+                        </div>
+                     </div>
+                  </div> -->
+
+                  <div class="quantity mt-15">
+                    <span class="text-muted fw-500">Quantité</span>
+                    <div fxLayout="row" fxLayout.xs="column" class="text-muted mt-15">
+                      <div fxLayout="row" fxLayoutAlign="center start">
+                        <button mat-icon-button matTooltip="Remove" (click)="decrement()">
+                          <mat-icon>remove</mat-icon>
+                        </button>
+                        <input type="text" name="quantity" value="{{counter}}" class="form-control input-number">
+                        <button mat-icon-button matTooltip="Add" (click)="increment()">
+                          <mat-icon>add</mat-icon>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                    <div class="dialogButtonAdd">
+                      <mat-icon mat-stroked-button color="primary" (click)="addToCart(product, counter)"
+                        class="mat-icon-lg mat-icon material-icons">shopping_cart</mat-icon>
+                      <mat-icon mat-stroked-button color="primary" (click)="showDetailPage()" class="hvr-icon">remove_red_eye</mat-icon>
+                      <button mat-raised-button color="primary" (click)="buyNow(product, counter)" class="hvr-icon">ACHETER MAINTENANT</button>
+                   </div>
+                  
+               </div>
+
+               
+               
+               <div class="col-md-6" *ngIf="selectedForfait">
+                  <mat-card>
+                     <mat-card-title class="matCardTitle">Details forfait :  {{selectedForfait.nom}}</mat-card-title>
+                     <mat-card-content>
+                        <div class="card">
+                           <div class="card-body">
+                             <div class="card-text forfaitDetailsColor">
+                                <p><b>Prix: {{selectedForfait.montant}} {{productsService.currency}}</b> </p>
+                                 <p ><b>Nom : </b>{{selectedForfait.nom}}</p>
+                                 <p><b>Prix : </b>{{selectedForfait.montant}}</p>
+                                 <p><b>Validité : </b>{{selectedForfait.validite}}</p>
+                                 <p *ngIf="getOperateurById(selectedForfait.idOperateur)"> <b>Opérateur : </b>{{getOperateurById(selectedForfait.idOperateur).nom}}</p>
+                                 <p *ngIf="selectedForfait.voice !== '0'"><b>Voix : </b> {{selectedForfait.voice}} appel</p>
+
+                                 <p *ngIf="selectedForfait.sms !== '0'"><b>Sms : </b>{{selectedForfait.sms}} sms</p>
+
+                                 <p *ngIf="selectedForfait.data !== '0'"><b>Data : </b>{{selectedForfait.data}} internet</p>
+                                 <p><b>Description : </b>{{selectedForfait.description}}</p>
+                           </div>
+                           </div>
+                         </div>
+                     </mat-card-content>
+                  </mat-card>
+               </div>
+            </div>
+         </div>
+         
+          <!-- <div class="" fxLayout="row" fxLayoutAlign="space-between center">
+
+            <div class="quantity mt-15">
+              <span class="text-muted fw-500">Quantité</span>
+              <div fxLayout="row" fxLayout.xs="column" class="text-muted mt-15">
+                <div fxLayout="row" fxLayoutAlign="center start">
+                  <button mat-icon-button matTooltip="Remove" (click)="decrement()">
+                    <mat-icon>remove</mat-icon>
+                  </button>
+                  <input type="text" name="quantity" value="{{counter}}" class="form-control input-number">
+                  <button mat-icon-button matTooltip="Add" (click)="increment()">
+                    <mat-icon>add</mat-icon>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="buttons mt-40">
+              <mat-icon mat-stroked-button color="primary" (click)="addToCart(product, counter)"
+                class="mat-icon-lg mat-icon material-icons">shopping_cart</mat-icon>
+              <mat-icon mat-stroked-button color="primary" (click)="buyNow()" class="hvr-icon">remove_red_eye</mat-icon>
+            </div>
+          </div> -->
+
+        </div>
+
+
+
+      </div>
+    </div>
+  </div>
+
+</div>

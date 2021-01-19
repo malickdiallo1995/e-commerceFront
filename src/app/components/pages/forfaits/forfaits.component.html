@@ -1,0 +1,73 @@
+<div >
+  <section style="display: flex;">
+    <div class="container-fluid" style="margin-bottom: 50px; margin-top: 20px;">
+      <div class="block-header">
+      </div>
+      <div class="row clearfix">
+        <div class="col-xs-6 col-sm-12 col-md-12 col-lg-12">
+          <div class="card">
+            <div class="header" style="text-align: center;padding: 20px; display: flex;justify-content: center;">
+              <h1>
+                <strong> Forfaits</strong>
+              </h1>
+            </div>
+            <div class="body" style="padding: 15px; ">
+              <div class="demo">
+                <div class="container">
+                  <div class="row" *ngIf="forfaits.length >0">
+                      <div class="col-md-3 col-sm-6" *ngFor="let forfait of forfaits; let i = index">
+                      <div [ngClass]="colorMatchForfait[i]">
+                        <div class="pricingTable-header" >
+                          <i class="material-icons">brightness_medium</i>
+
+                          <div class="price-value"> {{forfait.montant | currency:productService?.currency:'symbol' }}
+                            <!-- <span class="month">par mois</span> -->
+                            <span class="month">Validité : {{forfait.validite}}</span>
+                            <span class="month" *ngIf="getOperateurById(forfait.idOperateur)">Opérateur : <strong>{{getOperateurById(forfait.idOperateur).nom}}</strong> </span>
+                          </div>
+                        </div>
+                        <h3 class="heading" style="text-align: center"><strong>{{forfait.nom}}</strong></h3>
+                        <div class="pricing-content">
+                          <ul>
+
+                            <li *ngIf="forfait.voice !== '0'">
+                              <b>{{forfait.voice}}</b> appel</li>
+                            <li *ngIf="forfait.sms !== '0'">
+                              <b>{{forfait.sms}}</b> sms</li>
+                            <li *ngIf="forfait.data !== '0'">
+                              <b>{{forfait.data}}</b> Internet</li>
+                            <!-- <li>4G+ Valide 1 mois</li> -->
+                            <li>
+                              <b>Description : </b> {{forfait.description}}</li>
+                          </ul>
+                        </div>
+                        <!-- <div class="pricingTable-signup">
+                          <a href="#">Souscrire</a>
+                        </div> -->
+                      </div>
+                    </div>
+
+                    <div *ngIf="forfaits.length <=0">
+                      <div class="alert alert-warning">
+                          Pas de forfaits disponible
+                      </div>
+                    </div>
+                  </div>
+                  <div class="alert alert-warning" style="text-align: center;" *ngIf="forfaits.length <=0">
+                      Pas de forfait disponible
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+
+
+
+
+

@@ -1,0 +1,41 @@
+<div class="product-item"  >
+  <mat-card fxLayout="column">
+    <div class="product-img">
+        <a class="product-link" [routerLink]="['/home/product', product.id]">
+          <img [src]="product.images[0].url" alt="">
+          <div class="yith-wcbm-badge yith-wcbm-badge-css yith-wcbm-badge-6579' yith-wcbm-badge-css-8 yith-wcbm-css-badge-6579" *ngIf="product.discount!=0">
+            <div class="yith-wcbm-css-s1"></div>
+            <div class="yith-wcbm-css-s2"></div>
+            <div class="yith-wcbm-css-text">PROMO</div>
+          </div>
+       </a>
+       <div class="icons" fxLayout="column">
+         <a (click)="addToWishlist(product)" class="hvr-icon-pulse-shrink"><mat-icon class="hvr-icon mat-icon-lg mat-icon material-icons mr-10">favorite_border</mat-icon></a>
+         <a (click)="openProductDialog(product)" class="hvr-icon-pulse-shrink"><mat-icon class="hvr-icon">remove_red_eye</mat-icon></a>
+         <a (click)="addToCompare(product)" class="hvr-icon-pulse-shrink"><mat-icon matTooltip="Ajouter à la liste comparative " matTooltipPosition="right" class="hvr-icon" matTooltipClass="matToolTipDesign">cached</mat-icon></a>
+         <a class="hvr-icon-pulse-shrink"><mat-icon class="hvr-icon" matTooltip="{{product.shortDetails}}"  matTooltipPosition="right" matTooltipClass="matToolTipDesign">comment</mat-icon></a>
+        </div>
+    </div>
+     <div class="product-info-wrapper">
+        <span class="category">{{product.category}}</span>
+        <span class="brand"><strong>{{product.brand}}</strong></span>
+        <div class="title-wrap">
+           <h4>{{product.name}}</h4>
+        </div>
+        <div class="stars">
+           <mat-icon class="mat-icon-xs mat-icon material-icons ng-star-inserted">star_rate</mat-icon>
+           <mat-icon class="mat-icon-xs mat-icon material-icons ng-star-inserted">star_rate</mat-icon>
+           <mat-icon class="mat-icon-xs mat-icon material-icons ng-star-inserted">star_rate</mat-icon>
+           <mat-icon class="mat-icon-xs mat-icon material-icons ng-star-inserted">star_rate</mat-icon>
+           <mat-icon class="mat-icon-xs mat-icon material-icons ng-star-inserted">star_rate</mat-icon>
+        </div>
+        <div class="price-wrap" fxLayout="row" fxLayoutAlign="space-between center">
+         <p class="showDiscount" *ngIf="product.discount!=0">{{product.price | currency:productsService?.currency:'symbol'}}</p>
+         <p [ngClass]="product.discount==0?'normalPrice':'showPriceWhileDiscount'">{{product.salePrice | currency:productsService?.currency:'symbol'}}</p>
+
+         <!-- <p>{{product.salePrice | currency:productsService?.currency:'symbol'}}</p> -->
+        <button (click)="addToCart(product)" mat-mini-fab color="primary"><mat-icon class="mat-icon-lg mat-icon material-icons">shopping_cart</mat-icon></button>
+        </div>
+     </div>
+  </mat-card>
+</div>

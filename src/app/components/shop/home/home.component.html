@@ -1,0 +1,97 @@
+<div style="position: relative">
+  <ngx-spinner [fullScreen]="false"></ngx-spinner>
+
+<app-main-carousel [slides]="slides"></app-main-carousel>
+<div class="home-1-wrap">
+  <div class="container">
+      <div fxLayout="row wrap" class="info-bar">
+        <div class="card-wrap" fxFlex="100" fxFlex.gt-md="25" fxFlex.gt-xs="50">
+          <mat-card class="light-block" fxLayout="row"  fxLayoutAlign="start center">
+            <mat-icon mat-stroked-button color="primary" class="mat-icon-xlg  m-0">local_shipping</mat-icon>
+            <div class="content">
+              <p>LIVRAISON EXPRESS</p>
+              <span class="text-muted m-0">Livraison Express en 24h partout à Dakar</span>
+            </div>
+          </mat-card>
+        </div>
+        <div class="card-wrap" fxFlex="100" fxFlex.gt-md="25" fxFlex.gt-xs="50">
+          <mat-card class="light-block" fxLayout="row"  fxLayoutAlign="start center">
+            <mat-icon mat-stroked-button color="primary" class="mat-icon-xlg m-0">restore</mat-icon>
+            <div class="content">
+              <p>RETOUR PRODUITS</p>
+              <span class="text-muted m-0">Délai de retour 24h après réception de votre commande</span>
+            </div>
+          </mat-card>
+        </div>
+        <div class="card-wrap" fxFlex="100" fxFlex.gt-md="25" fxFlex.gt-xs="50">
+          <mat-card class="light-block" fxLayout="row"  fxLayoutAlign="start center">
+            <mat-icon mat-stroked-button color="primary" class="mat-icon-xlg m-0">monetization_on</mat-icon>
+            <div class="content">
+              <p>PAIEMENT FLEXIBLE</p>
+              <span class="text-muted m-0">Réglez votre commande via Orange Money WARI ou à la livraison</span>
+            </div>
+          </mat-card>
+        </div>
+        <div class="card-wrap" fxFlex="100" fxFlex.gt-md="25" fxFlex.gt-xs="50">
+          <mat-card class="light-block no-bd" fxLayout="row"  fxLayoutAlign="start center">
+            <mat-icon mat-stroked-button color="primary" class="mat-icon-xlg m-0">support_agent</mat-icon>
+            <div class="content" >
+              <p>SUPPORT 24/7</p>
+              <span class="text-muted m-0">Service commercial réactif pour votre confort</span>
+            </div>
+          </mat-card>
+        </div>
+      </div>
+      <div class="products sec-padding" *ngIf='load'>
+          <mat-tab-group>
+
+            <mat-tab  label="PRODUITS PHARES">
+                     <!-- <app-product-carousel [product]="productsFeatured | slice:0:8"></app-product-carousel> -->
+                     <div class="container all-products" *ngIf="products && load">
+                      <div class="products sec-padding" style="padding-top: 0px">
+                        <div class="row">
+                          <div *ngFor="let productFeatured of productsFeatured  let i=index" class="col-sm-3 col" [fxFlex.gt-sm]="viewCol">
+                            <app-product [product]="productFeatured"></app-product>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+            </mat-tab>
+
+            <mat-tab label="NOUVEAUTÉS">
+                    <!-- <app-product-carousel [product]="lastestProducts | slice:0:8"></app-product-carousel> -->
+                    <div class="container all-products" *ngIf="products && load">
+                      <div class="products sec-padding" style="padding-top: 0px">
+                        <div class="row">
+                          <div *ngFor="let latestprod of lastestProducts | slice:0:8 let i=index" class="col-sm-3 col" [fxFlex.gt-sm]="viewCol">
+                            <app-product [product]="latestprod"></app-product>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+            </mat-tab>
+
+            <mat-tab label="EN VENTE">
+
+                      <!-- <app-product-carousel [product]="products | slice:0:20"></app-product-carousel> -->
+
+                      <div class="container all-products" *ngIf="products && load">
+                        <div class="products sec-padding" style="padding-top: 0px">
+                          <div class="row">
+                            <div *ngFor="let product of products | slice:0:20 let i=index" class="col-sm-3 col" [fxFlex.gt-sm]="viewCol">
+                              <app-product [product]="product"></app-product>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+            </mat-tab>
+
+          </mat-tab-group>
+        </div>
+      <app-banners [banners]="banners"></app-banners>
+      <!-- <app-product-vertical [products]="products"></app-product-vertical> -->
+    </div>
+</div>
+</div>
