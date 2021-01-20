@@ -7,7 +7,7 @@ import {environment} from '../../../../environments/environment';
   providedIn: 'root'
 })
 export class ServicePaymentService {
-  private  url = environment.base_url+'/api/reglements/transaction/check_update'
+  private  url = environment.base_url+'/reglements/transaction/check_update'
   constructor(private httpClient: HttpClient) { }
 
   /**
