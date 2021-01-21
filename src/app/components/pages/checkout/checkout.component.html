@@ -10,71 +10,43 @@
               <hr>
             </div>
 
-            <form fxLayout="row wrap" >
-              <div  fxFlex="100" fxFlex.gt-md="50" fxFlex.md="50" class="mt-20 pr-5" ngClass.sm="mt-10" ngClass.xs="mt-10">
-                <mat-form-field class="w-100">
-                  <input matInput placeholder="Nom (obligatoire)" #name="ngModel" ngModel name="name" required>
-                  <mat-error *ngIf="name.invalid">Veuillez saisir votre nom</mat-error>
-                </mat-form-field>
-              </div>
-              <div  fxFlex="100" fxFlex.gt-md="50" fxFlex.md="50" class="pl-5 mt-20" ngClass.sm="mt-10" ngClass.xs="mt-10">
-                <mat-form-field class="w-100">
-                  <input matInput placeholder="Prenom (obligatoire)" #email="ngModel" ngModel name="email" required>
-                  <mat-error *ngIf="email.invalid">Veuillez saisir votre prenom</mat-error>
-                </mat-form-field>
-              </div>
-             <!-- <div  fxFlex="100" fxFlex.gt-sm="100" class="mt-20" ngClass.sm="mt-10" ngClass.xs="mt-10">
-                <mat-form-field class="w-100">
-                  <input matInput placeholder="Raison social entreprise (optional)" #subject="ngModel" ngModel name="subject">
-                </mat-form-field>
-              </div>-->
+            <form fxLayout="row wrap" [formGroup]="userInfoForm">
               <div  fxFlex="100" fxFlex.gt-sm="100" class="mt-20" ngClass.sm="mt-10" ngClass.xs="mt-10">
                 <mat-form-field class="w-100">
-                  <input matInput placeholder="Adresse (obligatoire)" #address="ngModel" ngModel name="address" required>
-                  <mat-error *ngIf="address.invalid">Veuillez saisir votre adresse</mat-error>
+                  <input matInput placeholder="Nom" ngModel formControlName="lastName" required>
+                  <mat-error *ngIf="userInfoForm.get('lastName').hasError('required')">Veuillez saisir votre nom</mat-error>
+                </mat-form-field>
+              </div>
+              <div fxFlex="100" fxFlex.gt-sm="100" class="mt-20" ngClass.sm="mt-10" ngClass.xs="mt-10">
+                <mat-form-field class="w-100">
+                  <input matInput placeholder="Prenom" ngModel formControlName="firstName" required>
+                  <mat-error *ngIf="userInfoForm.get('firstName').hasError('required')">Veuillez saisir votre prenom</mat-error>
                 </mat-form-field>
               </div>
               <div  fxFlex="100" fxFlex.gt-sm="100" class="mt-20" ngClass.sm="mt-10" ngClass.xs="mt-10">
                 <mat-form-field class="w-100">
-                  <input matInput placeholder="Region/Ville" #town="ngModel" ngModel name="town/city">
-                  <mat-error *ngIf="town.invalid">Veuillez saisir votre localité</mat-error>
+                  <input matInput placeholder="Adresse" ngModel formControlName="address" required>
+                  <mat-error *ngIf="userInfoForm.get('address').hasError('required')">Veuillez saisir votre adresse</mat-error>
                 </mat-form-field>
               </div>
-              <!--<div  fxFlex="100" fxFlex.gt-md="50" fxFlex.md="50" class="mt-20 pr-5" ngClass.sm="mt-10" ngClass.xs="mt-10">
+              <div  fxFlex="100" fxFlex.gt-sm="100" class="mt-20" ngClass.sm="mt-10" ngClass.xs="mt-10">
                 <mat-form-field class="w-100">
-                  <input matInput placeholder="State / Country (required)" #state="ngModel" ngModel name="state" required>
-                  <mat-error *ngIf="state.invalid">Please enter a valid message</mat-error>
-                </mat-form-field>
-              </div>-->
-              <!--<div  fxFlex="100" fxFlex.gt-md="100" fxFlex.md="50" class="pl-5 mt-20" ngClass.sm="mt-10" ngClass.xs="mt-10">
-                <mat-form-field class="w-100">
-                  <input matInput placeholder="Postcode / zip (required)" #postcode="ngModel" ngModel name="postcode" required>
-                  <mat-error *ngIf="postcode.invalid">Please enter a valid message</mat-error>
-                </mat-form-field>
-              </div>-->
-              <div  fxFlex="100" fxFlex.gt-md="50" fxFlex.md="50" class="mt-20 pr-5" ngClass.sm="mt-10" ngClass.xs="mt-10">
-                <mat-form-field class="w-100">
-                  <input matInput placeholder="Email (required)" #email="ngModel" ngModel name="email" required>
-                  <mat-error *ngIf="email.invalid">Veuillez saisir votre email</mat-error>
+                  <input matInput placeholder="Region/Ville" ngModel formControlName="city">
+                  <mat-error *ngIf="userInfoForm.get('city').hasError('required')">Veuillez saisir votre localité</mat-error>
                 </mat-form-field>
               </div>
-              <div  fxFlex="100" fxFlex.gt-md="50" fxFlex.md="50" class="pl-5 mt-20" ngClass.sm="mt-10" ngClass.xs="mt-10">
+              <div fxFlex="100" fxFlex.gt-sm="100" class="mt-20" ngClass.sm="mt-10" ngClass.xs="mt-10">
                 <mat-form-field class="w-100">
-                  <input matInput placeholder="Telephone (required)" #phone="ngModel" ngModel name="phone" required>
-                  <mat-error *ngIf="phone.invalid">Veuillez saisir votre telephone</mat-error>
+                  <input matInput placeholder="Email" ngModel formControlName="email" required>
+                  <mat-error *ngIf="userInfoForm.get('email').hasError('required')">Veuillez saisir votre email</mat-error>
+                  <mat-error *ngIf="userInfoForm.get('email').hasError('email')">Veuillez saisir un email correct</mat-error>
                 </mat-form-field>
               </div>
-              <!--<div class="add-info">
-                <h3>Informations Supplémentaires</h3>
-                <p class="text-muted">Transmettre un message à l'équipe(optional)</p>
-              </div>-->
-              <!--<div  fxFlex="100" fxFlex.gt-sm="100" class="mt-20" ngClass.sm="mt-10" ngClass.xs="mt-10">
+              <div fxFlex="100" fxFlex.gt-sm="100" class="mt-20" ngClass.sm="mt-10" ngClass.xs="mt-10">
                 <mat-form-field class="w-100">
-                  <textarea placeholder="Post content" matInput rows="4" ngModel name="content"></textarea>
+                  <input matInput placeholder="Telephone" ngModel formControlName="phone" required>
+                  <mat-error *ngIf="userInfoForm.get('phone').hasError('required')">Veuillez saisir votre numero de téléphone</mat-error>
                 </mat-form-field>
-              </div>-->
-              <div class="button-wrap" fxFlex="100" fxFlex.gt-sm="100" class="px-1" ngClass.sm="mt-1" ngClass.xs="mt-1">
-                <button class="btn-project" mat-raised-button  color="primary" type="submit">Valider</button>
               </div>
             </form>
           </div>
@@ -140,7 +112,7 @@
                   </mat-radio-group>
                 </div>
                 <div class="order" style="text-align: center;">
-                  <button class="btn-project" mat-raised-button color="primary" type="submit" style="width: 100%;background: green;">COMMANDER</button>
+                  <button *ngIf="userInfoForm.valid" class="btn-project" mat-raised-button color="primary" type="submit" style="width: 100%;background: green;" (click)="sendOrderInfo()">COMMANDER</button>
                 </div>
               </div>
             </div>
