@@ -17,5 +17,4 @@ export class PaymentSuccessComponent implements OnInit {
     console.log('*********** Transaction ID [',this.transactionId);
     this.servicePayment.payment(this.transactionId,'SUCCESS');
   }
-
 }
