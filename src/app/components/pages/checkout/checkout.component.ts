@@ -8,6 +8,10 @@ import {Transaction} from '../../../modals/transaction.model';
 import {environment} from '../../../../environments/environment';
 import {TransactionService} from '../../shared/services/transaction.service';
 import { DatePipe } from '@angular/common';
+import {Commande} from '../../../modals/commande.model';
+import {CommandeService} from '../../shared/services/commande.service';
+import {LigneCommande} from '../../../modals/ligneCommande.model';
+import {LigneCommandeService} from '../../shared/services/ligne-commande.service';
 
 @Component({
   selector: 'app-checkout',
@@ -20,16 +24,22 @@ export class CheckoutComponent implements OnInit {
   public cartItems: Observable<CartItem[]> = of([]);
   public buyProducts: CartItem[] = [];
   public userInfoForm: FormGroup;
+  public idCommande : number;
 
   amount: number;
   payments: string[] = ['Create an Account?', 'Flat Rate'];
 
   paymantWay: string[] = ['Paiement à la livraison','Mobile Money'];
-  selected: any;
+  selectedPaymentWay: any;
   transaction : Transaction;
   capture_url : string = '';
 
-  constructor(private cartService: CartService, public productService: ProductService, public transactionService: TransactionService, private datePipe: DatePipe) { }
+  constructor(private cartService: CartService,
+              public productService: ProductService,
+              public transactionService: TransactionService,
+              private datePipe: DatePipe,
+              public commandeService: CommandeService,
+              public ligneCommandeService : LigneCommandeService ) { }
 
   ngOnInit() {
     this.initForm();
@@ -52,32 +62,86 @@ export class CheckoutComponent implements OnInit {
 }
   public sendOrderInfo(){
     console.log(this.buyProducts);
-    let product = this.buyProducts[0]['forfaitTelephone']['product'];
-    this.transaction = new Transaction();
-    this.transaction.status = "PENDING";
-    this.transaction.application_id = environment.application_id;
-    this.transaction.price = product.price;
-    this.transaction.quantity =  this.buyProducts[0]['quantity'].toString();
-    // this.transaction.product_code = ;
-    this.transaction.product_name = product.name;
-    this.transaction.items = '1';
-    let date = new Date();
-    let formattedDate = this.datePipe.transform(date, 'yyyy MM dd hh mm s');
-    this.transaction.order_ref = product.name+formattedDate.toString();
-    this.transaction.order_ref = this.transaction.order_ref.replace(/\s/g, "")
-    this.transaction.payment_options = "instant";
-    this.transaction.currency = "XOF";
-    this.transaction.total = product.price * this.buyProducts[0]['quantity'];
-    // let response;
-    this.transactionService.addTransaction(this.transaction).subscribe((response : Transaction) => {
-      console.log(response);
-      console.log(response.capture_url);
-      if(response.capture_url !== ""){
-        this.capture_url = response.capture_url.toString();
-        console.log(this.capture_url);
-        window.open(this.capture_url);
+    //add Commande
+    let commande: Commande = new Commande();
+    commande.dateCommande = this.datePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:s');
+    this.cartService.getTotalAmount().subscribe((total) => {
+      commande.prix_total = total;
+    });
+    commande.statutCommande = "INIT";
+    this.commandeService.addCommande(commande).subscribe((response) => {
+      if(response !== null){
+        this.idCommande = response.id;
+        //add Ligne commande for each item in cart
+        for(let i = 0; i < this.buyProducts.length; i++){
+          let ligneCommande = new LigneCommande();
+          let total_value = 0;
+          ligneCommande.idCommande = this.idCommande;
+          if(this.selectedPaymentWay =='Mobile Money'){
+            ligneCommande.idmodeReglement = 1;
+          }else{
+            ligneCommande.idmodeReglement = 2;
+          }
+          ligneCommande.clientIdClient = 0;
+          ligneCommande.date = this.datePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:s');
+          ligneCommande.quantity = this.buyProducts[i].quantity;
+          if(this.buyProducts[i].forfaitTelephone.forfait){
+            ligneCommande.idForfait = this.buyProducts[i].forfaitTelephone.forfait.id;
+            ligneCommande.containforfait = true;
+            ligneCommande.montantForfait = this.buyProducts[i].forfaitTelephone.forfait.montant;
+
+            if(this.buyProducts[i].forfaitTelephone.forfait.typePrePostPaid === 'prePaid'){
+              ligneCommande.engagement = 'prePaid';
+              ligneCommande.nbMoisEngagement = 0;
+              total_value+=this.buyProducts[i].forfaitTelephone.forfait.montant;
+            }else{
+              ligneCommande.engagement = 'postPaid';
+              ligneCommande.nbMoisEngagement = 12;
+            }
+
+          }else{
+            ligneCommande.idForfait = 0;
+            ligneCommande.containforfait = false;
+            ligneCommande.montantForfait = 0;
+            ligneCommande.engagement = '';
+            ligneCommande.nbMoisEngagement = 0;
+
+          }
+          ligneCommande.total = (total_value + this.buyProducts[i].forfaitTelephone.product.salePrice) * this.buyProducts[i].quantity;
+          ligneCommande.prixTelephone = this.buyProducts[i].forfaitTelephone.product.salePrice;
+          this.ligneCommandeService.addLigneCommande(ligneCommande).subscribe();
+      }
+        //send tranasction to api if payment method = Mobile Money
+        if(this.selectedPaymentWay =='Mobile Money') {
+
+          let product = this.buyProducts[0]['forfaitTelephone']['product'];
+          this.transaction = new Transaction();
+          this.transaction.status = "PENDING";
+          this.transaction.idCommande = this.idCommande;
+          this.transaction.application_id = environment.application_id;
+          this.transaction.price = product.price;
+          this.transaction.quantity = this.buyProducts[0]['quantity'].toString();
+          // this.transaction.product_code = ;
+          this.transaction.product_name = product.name;
+          this.transaction.items = '1';
+          let date = new Date();
+          let formattedDate = this.datePipe.transform(date, 'yyyy MM dd hh mm s');
+          this.transaction.order_ref = product.name + formattedDate.toString();
+          this.transaction.order_ref = this.transaction.order_ref.replace(/\s/g, "")
+          this.transaction.payment_options = "instant";
+          this.transaction.currency = "XOF";
+          this.transaction.total = product.price * this.buyProducts[0]['quantity'];
+          // let response;
+          this.transactionService.addTransaction(this.transaction).subscribe((response: Transaction) => {
+            if (response.capture_url !== "") {
+              this.capture_url = response.capture_url.toString();
+              window.open(this.capture_url);
+            } else {
+              alert("ERREUR LORS DU PAIEMENT");
+            }
+          });
+        }
       }else{
-        console.log("in else");
         alert("ERREUR LORS DU PAIEMENT");
       }
     });

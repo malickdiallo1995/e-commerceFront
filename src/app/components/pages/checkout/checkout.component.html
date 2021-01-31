@@ -103,16 +103,13 @@
                   </li>
                 </ul>
                 <div class="paymentFinal">
-                  <mat-radio-group [(ngModel)]="selected">
+                  <mat-radio-group [(ngModel)]="selectedPaymentWay">
                     <mat-radio-button fxLayout="column" *ngFor="let payment of paymantWay" [value]="payment">{{payment}}
-                      <div *ngIf="selected == 'Mobile Money'">
-                        <img src="assets/images/payment.png" alt="Mobile money" *ngIf="payment === 'Mobile Money'" style="width: 470px;">
-                      </div>
                     </mat-radio-button>
                   </mat-radio-group>
                 </div>
                 <div class="order" style="text-align: center;">
-                  <button *ngIf="userInfoForm.valid" class="btn-project" mat-raised-button color="primary" type="submit" style="width: 100%;background: green;" (click)="sendOrderInfo()">COMMANDER</button>
+                  <button *ngIf="userInfoForm.valid && selectedPaymentWay" class="btn-project" mat-raised-button color="primary" type="submit" style="width: 100%;background: green;" (click)="sendOrderInfo()">COMMANDER</button>
                 </div>
               </div>
             </div>

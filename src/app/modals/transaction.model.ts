@@ -16,27 +16,29 @@ export class Transaction {
   expiresAt?: String;
   preorder_end_date?: String;
   createdAt?: String;
-  capture_url?:String
+  capture_url?:String;
+  idCommande?:number
 
   constructor(
     id?:number,
-  currency?:String,
-  payment_options?:String,
-  order_ref?:String,
-  items?:String,
-  product_name?:String,
-  product_code?:String,
-  quantity?:String,
-  price?:number,
-  total?:number,
-  transaction_id?:String,
-  url?:String,
-  application_id?:String,
-  status?:String,
+    currency?:String,
+    payment_options?:String,
+    order_ref?:String,
+    items?:String,
+    product_name?:String,
+    product_code?:String,
+    quantity?:String,
+    price?:number,
+    total?:number,
+    transaction_id?:String,
+    url?:String,
+    application_id?:String,
+    status?:String,
     expiresAt?: String,
     preorder_end_date?: String,
     createdAt?: String,
-    capture_url?:String
+    capture_url?:String,
+    idCommmande?:number
   ){
 
     this.id = id;
@@ -57,5 +59,6 @@ export class Transaction {
     this.preorder_end_date = preorder_end_date;
     this.createdAt = createdAt;
     this.capture_url = capture_url;
+    this.idCommande = idCommmande;
   }
 }
