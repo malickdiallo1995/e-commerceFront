@@ -12,7 +12,6 @@ import {Commande} from '../../../modals/commande.model';
 import {CommandeService} from '../../shared/services/commande.service';
 import {LigneCommande} from '../../../modals/ligneCommande.model';
 import {LigneCommandeService} from '../../shared/services/ligne-commande.service';
-import {JsonObject} from '@angular/compiler-cli/ngcc/src/packages/entry_point';
 
 @Component({
   selector: 'app-checkout',
@@ -30,10 +29,10 @@ export class CheckoutComponent implements OnInit {
     selected_payment_way : "",
     application_id : environment.application_id,
     date : "",
-    amount : 0,
-    currency : "",
-    payment_options : "",
+    amount : '',
     order_ref : "",
+    currency : "XOF",
+    payment_options : "",
     items : "",
     cart : []
   }
@@ -230,6 +229,11 @@ export class CheckoutComponent implements OnInit {
     }
     this.transactionJson.selected_payment_way = this.selectedPaymentWay;
     this.transactionJson.date = this.datePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:s');
+    this.transactionJson.items = this.buyProducts.length;
+    this.transactionJson.order_ref = "Commande_"+ this.datePipe.transform(new Date(), 'yyyy MM dd hh mm s');
+    this.transactionJson.order_ref = this.transactionJson.order_ref.replace(/\s/g, "");
+    this.transactionJson.payment_options = "instant";
+    this.cartService.getTotalAmount().subscribe((amount) => this.transactionJson.amount = amount);
     this.transactionService.addTransaction(this.transactionJson).subscribe((response: Transaction) => {
       if (response.capture_url !== "") {
         this.capture_url = response.capture_url.toString();
