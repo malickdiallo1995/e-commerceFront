@@ -24,7 +24,7 @@ export class TransactionService {
   }
 
 
-  public addTransaction(transaction: Transaction):Observable<Transaction>{
-    return this.httpClient.post(this.url+"create/bis", transaction);
+  public addTransaction(transactionJson: any):Observable<Transaction>{
+    return this.httpClient.post(this.url+"create/bis", transactionJson);
   }
 }
