@@ -212,7 +212,7 @@ export class CheckoutComponent implements OnInit {
       }
       this.transactionJson.cart.push({
         "product_name": this.buyProducts[i].forfaitTelephone.product.name,
-        "product_code": "",
+        "product_code": (this.buyProducts[i].forfaitTelephone.product.name+''+this.datePipe.transform(new Date(), 'yyyy MM dd hh mm s')).replace(/\s/g, ""),
         "quantity": this.buyProducts[i].quantity,
         "price": this.buyProducts[i].forfaitTelephone.product.salePrice,
         "total": total,
