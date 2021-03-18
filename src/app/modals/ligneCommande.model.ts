@@ -12,6 +12,7 @@ export class LigneCommande{
   idForfait?:number;
   idCommande?:number;
   quantity?: number;
+  idProduit?:number;
 
   constructor(
     id?: number,
@@ -26,7 +27,8 @@ export class LigneCommande{
     clientIdClient?:number,
     idForfait?:number,
     idCommande?:number,
-    quantity?:number) {
+    quantity?:number,
+    idProduit?:number) {
 
     this.id = id;
     this.prixTelephone = prixTelephone;
@@ -41,5 +43,6 @@ export class LigneCommande{
     this.idForfait = idForfait;
     this.idCommande = idCommande;
     this.quantity = quantity;
+    this.idProduit = idProduit;
   }
 }

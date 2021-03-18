@@ -223,7 +223,8 @@ export class CheckoutComponent implements OnInit {
         "note_3": "",
         "note_4": "",
         "note_5": "",
-        "forfait" : forfait
+        "forfait" : forfait,
+        "product_id" : this.buyProducts[i].forfaitTelephone.product.id
       });
 
     }
