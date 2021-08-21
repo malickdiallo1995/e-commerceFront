@@ -60,9 +60,9 @@ export class HomeComponent implements OnInit {
   public slides = [
     // { title: 'IMAGE 1', subtitle: 'Magick Promo', image: 'assets/images/carousel/bg3.png' ,imagePromo:'assets/images/carousel/B2.png',style :'color:white;'},
     // { title: 'Image 2', subtitle: 'Mega Promo', image: 'assets/images/carousel/B1.png',imagePromo: 'assets/images/carousel/B2.png',style :'color:white;' }
-    { title: 'Image 1', subtitle: 'Mega Promo', image: 'assets/images/carousel/banner1.jpg',style :'color:white;' },
-    { title: 'Image 2', subtitle: 'Boulko Rate', image: 'assets/images/carousel/banner2.jpg',style :'color:white;' },
-    { title: 'Image 2', subtitle: 'AYTHIA WAY', image: 'assets/images/carousel/banner3.jpg',style :'color:white;' }
+    { title: '', subtitle: 'Mega Promo', image: 'assets/images/carousel/background_5.jpg',style :'color:black;' },
+    { title: '', subtitle: 'Boulko Rate', image: 'assets/images/carousel/background_6.jpg',style :'color:black;' },
+    { title: '', subtitle: 'AYTHIA WAY', image: 'assets/images/carousel/background_8.jpg',style :'color:black;' }
   ];
 
   constructor(private spinner: NgxSpinnerService ,private productService: ProductService,  private cartService: CartService,private marqueService: MarqueService, private route: ActivatedRoute) {
@@ -84,7 +84,7 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit() {
-  
+
     this.spinner.show();
     this.productService.getBanners().subscribe(
       data => this.banners = data
