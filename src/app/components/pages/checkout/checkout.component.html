@@ -66,10 +66,10 @@
                     </div>
                     <!-- <p *ngIf='item.forfaitTelephone.forfait'> avec forfait {{item.forfaitTelephone.forfait.nom}}</p> -->
 
-                    <span *ngIf="(!item.forfaitTelephone.forfait||(item.forfaitTelephone.forfait&&item.forfaitTelephone.forfait.type !== 'prePaid'))">
+                    <span *ngIf="(!item.forfaitTelephone.forfait||(item.forfaitTelephone.forfait&&item.forfaitTelephone.forfait.typePrePostPaid !== 'prePaid'))">
                        {{ item.forfaitTelephone.product.salePrice * item.quantity | currency:productService?.currency:'symbol' }}
                     </span>
-                    <span *ngIf="(item.forfaitTelephone.forfait && item.forfaitTelephone.forfait.type === 'prePaid')">
+                    <span *ngIf="(item.forfaitTelephone.forfait && item.forfaitTelephone.forfait.typePrePostPaid === 'prePaid')">
                           {{ (item.forfaitTelephone.product.salePrice + item.forfaitTelephone.forfait.montant) * item.quantity | currency:productService?.currency:'symbol' }}
                     </span>
 
